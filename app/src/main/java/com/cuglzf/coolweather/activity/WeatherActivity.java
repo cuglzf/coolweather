@@ -162,14 +162,7 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
      *  从SharedPreferences文件中读取储存的天气信息，并显示到界面上
      */
     private void showWeather(){
-        Log.d("mytest","showWeather begin");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.d("mytest","city_name = "+prefs.getString("city_name",""));
-        Log.d("mytest","temp1 = "+prefs.getString("temp1",""));
-        Log.d("mytest","temp2 = "+prefs.getString("temp2",""));
-        Log.d("mytest","weather_desp = "+prefs.getString("weather_desp",""));
-        Log.d("mytest","publish_time = "+prefs.getString("publish_time",""));
-        Log.d("mytest","current_date = "+prefs.getString("current_date",""));
         cityNameText.setText(prefs.getString("city_name",""));
         temp1Text.setText(prefs.getString("temp1","")+"℃");
         temp2Text.setText(prefs.getString("temp2","")+"℃");
@@ -178,8 +171,8 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         currentDateText.setText(prefs.getString("current_date",""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
-   //     Intent intent = new Intent(this , AutoUpdateService.class);
+        Intent intent = new Intent(this , AutoUpdateService.class);
         Log.d("mytest","AutoUpdateService begin");
-    //    startActivity(intent);
+        startService(intent);
     }
 }

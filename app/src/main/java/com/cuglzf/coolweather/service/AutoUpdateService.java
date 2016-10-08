@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.cuglzf.coolweather.util.HttpCallbackListener;
 import com.cuglzf.coolweather.util.HttpUtil;
@@ -44,11 +45,15 @@ public class AutoUpdateService extends Service {
      *  更新天气信息
      */
     private void updateWeather(){
+        Log.d("mytest","updateWeather begin");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
        // String weatherCode = prefs.getString("weather_code","");
         final String cityCode = prefs.getString("belong_city","");
+
         final String countyName = prefs.getString("city_name","");
       //  final String belongCity = prefs.getString("belong_city","");
+        Log.d("mytest","cityCode = " + cityCode);
+        Log.d("mytest","countyName = " + countyName);
         String address = "http://flash.weather.com.cn/wmaps/xml/" + cityCode + ".xml";
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
