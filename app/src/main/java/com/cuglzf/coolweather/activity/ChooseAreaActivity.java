@@ -42,26 +42,32 @@ public class ChooseAreaActivity extends Activity {
     private ArrayAdapter<String> adapter ;
     private CoolWeatherDB coolWeatherDB ;
     private List<String> dataList = new ArrayList<String>();
+
     /**
      * 省列表
      */
     private List<Province> provinceList ;
+
     /**
      * 市列表
      */
     private List<City> cityList ;
+
     /**
      * 县列表
      */
     private List<County> countyList;
+
     /**
      * 选中的省份
      */
     private Province selectedProvince ;
+
     /**
      * 选中的城市
      */
     private City selectedCity ;
+
     /**
      * 当前选中的级别
      */
@@ -102,8 +108,7 @@ public class ChooseAreaActivity extends Activity {
                     queryCounties();
                 }else if (currentLevel == LEVEL_COUNTY){
                     String countyName = countyList.get(i).getCountyName();
-                    int cityId = countyList.get(i).getCityId();
-                    String cityCode = cityList.get(cityId).getCityCode();
+                    String cityCode = selectedCity.getCityCode();
                     Intent intent = new Intent(ChooseAreaActivity.this , WeatherActivity.class);
                     intent.putExtra("city_code",cityCode);
                     intent.putExtra("county_name",countyName);

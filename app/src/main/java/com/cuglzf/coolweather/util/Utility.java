@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.cuglzf.coolweather.model.City;
 import com.cuglzf.coolweather.model.CoolWeatherDB;
@@ -30,6 +31,9 @@ public class Utility {
      */
     public synchronized static boolean handleProvincesResponse(CoolWeatherDB coolWeatherDB , String response){
 
+        if (TextUtils.isEmpty(response)){
+            return false ;
+        }
         try{
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser xmlPullParser = factory.newPullParser();
@@ -65,6 +69,9 @@ public class Utility {
      */
     public  static final boolean handleCitiesResponse(CoolWeatherDB coolWeatherDB , String response , int provinceId){
 
+        if (TextUtils.isEmpty(response)){
+            return false ;
+        }
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser xmlPullParser = factory.newPullParser();
@@ -101,6 +108,9 @@ public class Utility {
      */
     public  static final boolean handleCountiesResponse(CoolWeatherDB coolWeatherDB , String response , int ctiyId){
 
+        if (TextUtils.isEmpty(response)){
+            return false ;
+        }
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser xmlPullParser = factory.newPullParser();
@@ -134,8 +144,11 @@ public class Utility {
     /**
      *  解析服务器返回的XML数据，并将解析出的数据储存在本地
      */
-    public static void handleWeatherResponse(Context context , String response){
+    public static void handleWeatherResponse(Context context , String response ,String cityCode , String countyName){
 
+        if (TextUtils.isEmpty(response)){
+            return  ;
+        }
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser xmlPullParser = factory.newPullParser();
@@ -143,16 +156,18 @@ public class Utility {
             int eventType = xmlPullParser.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT){
                 String tagName = xmlPullParser.getName();
-                switch (eventType){
-                    case XmlPullParser.START_TAG :{
-                        if ("city".equals(tagName)){
-                            String cityName = xmlPullParser.getAttributeValue(null,"cityname");
-                            String weatherCode = xmlPullParser.getAttributeValue(null,"url");
-                            String temp1 = xmlPullParser.getAttributeValue(null,"tem1");
-                            String temp2 = xmlPullParser.getAttributeValue(null,"tem2");
-                            String weatherDesp = xmlPullParser.getAttributeValue(null,"stateDetailed");
-                            String publishTime = xmlPullParser.getAttributeValue(null,"time");
-                            saveWeatherInfo(context,cityName,weatherCode,temp1,temp2,weatherDesp,publishTime);
+                switch (eventType) {
+                    case XmlPullParser.START_TAG: {
+                        if ("city".equals(tagName) ) {
+                            String getCountyName = xmlPullParser.getAttributeValue(null, "centername");
+                            if (getCountyName.equals(countyName)) {
+                                String weatherCode = xmlPullParser.getAttributeValue(null, "url");
+                                String temp1 = xmlPullParser.getAttributeValue(null, "tem1");
+                                String temp2 = xmlPullParser.getAttributeValue(null, "tem2");
+                                String weatherDesp = xmlPullParser.getAttributeValue(null, "stateDetailed");
+                                String publishTime = xmlPullParser.getAttributeValue(null, "time");
+                                saveWeatherInfo(context, cityCode, countyName, weatherCode, temp1, temp2, weatherDesp, publishTime);
+                            }
                         }
                         break;
                     }
@@ -161,20 +176,21 @@ public class Utility {
                 }
                 eventType = xmlPullParser.next();
             }
-
         }catch (Exception e){
             e.printStackTrace();
+            Log.d("mytest","handleWeatherResponse Error!");
         }
     }
 
     /**
      *   将服务器返回的所有天气信息储存到SharedPreferences文件中
      */
-     public static void saveWeatherInfo(Context context , String cityName , String weatherCode, String temp1,
+     public static void saveWeatherInfo(Context context ,String belongCity, String cityName , String weatherCode, String temp1,
                                         String temp2 , String weatherDesp , String publishTime){
          SimpleDateFormat sdf = new SimpleDateFormat("yyy年M月d日", Locale.CHINA);
          SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
          editor.putBoolean("city_selected",true);
+         editor.putString("belong_city",belongCity);
          editor.putString("city_name",cityName);
          editor.putString("weather_code",weatherCode);
          editor.putString("temp1",temp1);
