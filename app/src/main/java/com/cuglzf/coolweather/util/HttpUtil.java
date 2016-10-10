@@ -1,5 +1,7 @@
 package com.cuglzf.coolweather.util;
 
+
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,9 +11,10 @@ import java.net.URL;
 /**
  * Created by LZF on 2016/9/22.
  */
-public class HttpUtil {
+public class HttpUtil{
 
     public static void sendHttpRequest(final String address , final HttpCallbackListener listener){
+
         new Thread(new Runnable() {
             @Override
             public void run() {

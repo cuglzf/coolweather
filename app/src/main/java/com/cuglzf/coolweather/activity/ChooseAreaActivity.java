@@ -180,7 +180,7 @@ public class ChooseAreaActivity extends Activity {
     /**
      *  根据传入的代号和类型从服务器上查询省市县数据
      */
-    private void queryFromServer(final String code , final String type){
+    private void queryFromServer( final String code , final String type){
         String address;
         if (!TextUtils.isEmpty(code)){
             address = "http://flash.weather.com.cn/wmaps/xml/" + code + ".xml";
@@ -191,6 +191,7 @@ public class ChooseAreaActivity extends Activity {
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
+
                 boolean result = false ;
                 if ("province".equals(type)){
                     result = Utility.handleProvincesResponse(coolWeatherDB,response);

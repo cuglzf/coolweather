@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -172,7 +171,6 @@ public class WeatherActivity extends Activity implements View.OnClickListener{
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this , AutoUpdateService.class);
-        Log.d("mytest","AutoUpdateService begin");
         startService(intent);
     }
 }
